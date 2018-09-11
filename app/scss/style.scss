@@ -1,0 +1,13 @@
+.forvalJs-form {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-column-gap: 15px;
+	width: 500px;
+	margin: 50px auto;
+	& > label {}
+	& > input {
+		margin-bottom: 15px;
+	}
+}
+
+.forvalJs-prompting {}
