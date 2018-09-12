@@ -1,1 +1,1 @@
-.forvalJs-form{display:grid;grid-template-columns:auto 1fr;grid-column-gap:15px;width:500px;margin:50px auto}.forvalJs-form>input{margin-bottom:15px}
+.forvalJs-form{display:grid;grid-template-columns:auto 1fr;grid-column-gap:15px;width:600px;margin:50px auto}.forvalJs-form>input{margin-bottom:15px;padding:0 6px}@supports (-ms-ime-align:auto){.forvalJs-form>input{width:100%}}

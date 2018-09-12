@@ -1,13 +1,24 @@
 .forvalJs-form {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-column-gap: 15px;
-	width: 500px;
-	margin: 50px auto;
+	display               : grid;
+	grid-template-columns : auto 1fr;
+	grid-column-gap       : 15px;
+	width                 : 600px;
+	margin                : 50px auto;
 	& > label {}
 	& > input {
-		margin-bottom: 15px;
+		margin-bottom       : 15px;
+		padding             : 0 6px;
+		//width: 100%;
 	}
 }
 
 .forvalJs-prompting {}
+
+//if IE or Egde
+@supports (-ms-ime-align:auto) {
+	.forvalJs-form {
+		& > input {
+			width             : 100%;
+		}
+	}
+}
