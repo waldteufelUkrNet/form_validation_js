@@ -1,4 +1,4 @@
-.forvalJs-form {
+form.forvalJs {
 	display               : grid;
 	grid-template-columns : auto 1fr;
 	grid-column-gap       : 15px;
@@ -12,11 +12,23 @@
 	}
 }
 
-.forvalJs-prompting {}
+.forvalJs[data-forvalJs-type="prompting"] {
+  height           : 0;
+  overflow         : hidden;
+  background-color : rgba(255,0,0,.2);
+  border-left      : 3px solid red;
+  box-sizing       : border-box;
+  padding-left     : 6px;
+  user-select      : none;
+  display          : block;
+  transition       : height .5s, margin-bottom .5s;
+}
+
+.forvalJs-btn {}
 
 //if IE or Egde
 @supports (-ms-ime-align:auto) {
-	.forvalJs-form {
+	.forvalJs {
 		& > input {
 			width             : 100%;
 		}

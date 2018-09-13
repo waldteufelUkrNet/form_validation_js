@@ -21,46 +21,26 @@ html(lang='en')
       // ↓↓↓ WORK AREA (start) ↓↓↓
       .work-area
 
+        form.forvalJs
 
-        form.forvalJs-form.form1
-
-          label(for='form-empty') Not empty:
-          input.forvalJs-notEmpty(type='text' placeholder='not empty' id='form-empty')
-
-          label(for='form-number') Price:
-          input.forvalJs-price(type='text' placeholder='enter your price' id='form-number')
-
-          label(for='form-empty2') Not empty:
-          input.forvalJs-notEmpty(type='text' placeholder='not empty' id='form-empty2' data-forvalJs-notEmpty='5')
+          //- label(for='form-empty') Not empty:
+          //- input.forvalJs(type='text' placeholder='not empty' id='form-empty' data-forvalJs-minLength='6')
 
           label(for='form-email2') E-mail:
-          input.forvalJs-email(type='text' placeholder='enter your email' id='form-email2')
+          input.forvalJs(type='email' placeholder='enter your email' id='form-email2' data-forvalJs-minLength='6')
 
-          label(for='form-number2') Price:
-          input.forvalJs-price(type='text' placeholder='enter your price' id='form-number2')
+          //- label(for='form-number') Price:
+          //- input.forvalJs(type='text' placeholder='enter your price' id='form-number' data-forvalJs-type='price' data-forvalJs-minLength='6')
 
-          label(for='form-email') E-mail:
-          input.forvalJs-email(type='text' placeholder='enter your email' id='form-email')
+          //- label(for='form-password2') Password:
+          //- input.forvalJs.forvalJs-password(type='password' placeholder='enter your password' id='form-password2'  data-forvalJs-notEmpty='6')
 
-          label(for='form-password2') Password:
-          input.forvalJs-password.forvalJs-notEmpty(type='password' placeholder='enter your password' id='form-password2'  data-forvalJs-notEmpty='6')
+          //- label(for='form-password') Confirm password:
+          //- input.forvalJs(type='password' placeholder='enter your password' id='form-password')
 
-          label(for='form-password') Confirm password:
-          input.forvalJs-confirmPassword(type='password' placeholder='enter your password' id='form-password')
+          //- button.forvalJs(type='submit') submit
 
 
-        form.forvalJs-form.form2
 
-          label(for='form-empty3') Not empty:
-          input.forvalJs-notEmpty(type='text' placeholder='not empty' id='form-empty3' data-forvalJs-notEmpty='8')
-
-          label(for='form-email3') E-mail:
-          input.forvalJs-email(type='text' placeholder='enter your email' id='form-email3')
-
-          label(for='form-password3') Password:
-          input.forvalJs-password(type='password' placeholder='enter your password' id='form-password3')
-
-          label(for='form-number3') Price:
-          input.forvalJs-price(type='text' placeholder='enter your price' id='form-number3')
       // ↑↑↑ /WORK AREA (end) ↑↑↑
     // ↑↑↑ /MAIN SECTION (end) ↑↑↑
