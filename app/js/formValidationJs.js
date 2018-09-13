@@ -1,4 +1,5 @@
 // made by waldteufel@ukr.net
+//       e.preventDefault();
 
 // .forvalJs
 // data-forvalJs-minLength='number'
@@ -11,65 +12,49 @@
 // data-forvalJs-type='prompting'
 
 $(document).ready(function(){
+  /* ↓↓↓ GLOBAL VARIABLES ↓↓↓ */
+  var validateSimpleIndicator = true;
+  /* ↑↑↑ /GLOBAL VARIABLES ↑↑↑ */
+
   // вимкнення стандартної валідації форм
   $('form.forvalJs').attr('novalidate','true');
 
-  $('input.forvalJs').blur(function(){
-    var tempTypeAttr      = $(this).attr('data-forvalJs-type') || $(this).attr('type'),
-        tempMinLengthAttr = +$(this).attr('data-forvalJs-minLength'),
-        tempMaxLengthAttr = +$(this).attr('data-forvalJs-maxLength'),
-        tempValue         = $(this).val();
 
+$("input.forvalJs").bind("blur keyup", function(event) {
+  var tempTypeAttr      = $(this).attr('data-forvalJs-type') || $(this).attr('type'),
+      tempMinLengthAttr = +$(this).attr('data-forvalJs-minLength'),
+      tempMaxLengthAttr = +$(this).attr('data-forvalJs-maxLength'),
+      tempValue         = $(this).val();
 
-    if ( isNumeric(tempMinLengthAttr) ) {
-      // дії за наявності мінімальної довжини
-      validateSimple(this,tempMinLengthAttr,tempValue);
+  if (event.type == 'blur') {
+    validateController(this, tempMinLengthAttr, tempMaxLengthAttr, tempTypeAttr, tempValue);
+  } else if(event.type == 'keyup') {
+    if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
+      validateController(this, tempMinLengthAttr, tempMaxLengthAttr, tempTypeAttr, tempValue);
     }
-
-    if ( isNumeric(tempMaxLengthAttr) ) {
-      // дії за наявності максимальної довжини
-    }
-
-    if ( tempTypeAttr == 'email' ) {
-      validateEmail(this, tempValue);
-    }
-
-    if ( tempTypeAttr == 'price' ) {
-      validatePrice(this, tempValue);
-    }
-  });
-
-  $('input.forvalJs').keyup(function(){
-    var tempTypeAttr      = $(this).attr('data-forvalJs-type') || $(this).attr('type'),
-        tempMinLengthAttr = +$(this).attr('data-forvalJs-minLength'),
-        tempMaxLengthAttr = +$(this).attr('data-forvalJs-maxLength'),
-        tempValue         = $(this).val();
-
-    if ( isNumeric(tempMinLengthAttr) ) {
-      // дії за наявності мінімальної довжини
-      if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-        validateSimple(this, tempMinLengthAttr, tempValue);
-      }
-    }
-
-    if ( isNumeric(tempMaxLengthAttr) ) {
-      // дії за наявності максимальної довжини
-    }
-
-    if ( tempTypeAttr == 'email' ) {
-      if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-        validateEmail(this, tempValue);
-      }
-    }
-
-    if ( tempTypeAttr == 'price' ) {
-      if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-        validatePrice(this, tempValue);
-      }
-    }
-  });
+  }
+});
 
   /* ↓↓↓ FUNCTION DECLARATIONS ↓↓↓ */
+  function validateController (elem, tempMinLengthAttr, tempMaxLengthAttr, tempTypeAttr, tempValue) {
+    // if ( $(this).attr('data-forvalJs-minLength') ) {
+    //   // дії за наявності мінімальної довжини
+    //   validateSimple(this,tempMinLengthAttr,tempValue);
+    // }
+
+    // if ( isNumeric(tempMaxLengthAttr) ) {
+    //   // дії за наявності максимальної довжини
+    // }
+
+    // if ( tempTypeAttr == 'email' ) {
+    //   validateEmail(this, tempValue);
+    // }
+
+    // if ( tempTypeAttr == 'price' ) {
+    //   validatePrice(this, tempValue);
+    // }
+  }
+
   function validateSimple(elem, tempMinLengthAttr, tempValue) {
     if ( tempMinLengthAttr == 0 && tempValue == '' ) {
       if ( $(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] ) {
@@ -77,6 +62,7 @@ $(document).ready(function(){
                   .text('this field can not be empty');
         return
       }
+      validateSimpleIndicator = false;
       drawPromptingElem(elem, 'this field can not be empty');
       return
     }
@@ -86,14 +72,17 @@ $(document).ready(function(){
                   .text('The length of the field is at least ' + tempMinLengthAttr + ' symbols');
         return
       }
+      validateSimpleIndicator = false;
       drawPromptingElem(elem, 'The length of the field is at least ' + tempMinLengthAttr + ' symbols');
       return
     }
+    validateSimpleIndicator = true;
     removePromptingElem($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]);
   }
 
   function validateEmail(elem, tempValue) {
 
+    if (!validateSimpleIndicator) return
     if (tempValue.length == 0) return
 
     var charAmount = calculateCharsInStr(tempValue, '@');
@@ -293,94 +282,26 @@ $(document).ready(function(){
 })
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // if ( $(this).attr('data-forvalJs-minLength') ) {
+    //   // дії за наявності мінімальної довжини
+    //   if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
+    //     validateSimple(this, tempMinLengthAttr, tempValue);
+    //   }
+    // }
 
-// $(document).ready(function(){
+    // if ( isNumeric(tempMaxLengthAttr) ) {
+    //   // дії за наявності максимальної довжини
+    // }
 
-//   $('.forvalJs-notEmpty').blur(function(){
-//     validateNotEmpty (this);
-//   });
+    // if ( tempTypeAttr == 'email' ) {
+    //   if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
+    //     validateEmail(this, tempValue);
+    //   }
+    // }
 
-//   $('.forvalJs-notEmpty').keyup(function(){
-//     if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-//       validateNotEmpty (this);
-//     }
-//   });
-
-//   $('.forvalJs-email').blur(function(){
-//     validateEmail(this)
-//   });
-
-//   $('.forvalJs-email').keyup(function(){
-//     if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-//       validateEmail (this);
-//     }
-//   });
-
-//   $('.forvalJs-price').blur(function(){
-//     validatePrice(this)
-//   });
-
-//   $('.forvalJs-price').keyup(function(){
-//     if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-//       validatePrice (this);
-//     }
-//   });
-
-//   $('.forvalJs-password').blur(function(){
-//     validatePassword(this)
-//   });
-
-//   $('.forvalJs-password').keyup(function(){
-//     if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-//       validatePassword (this);
-//     }
-//   });
-
-//   $('.forvalJs-confirmPassword').blur(function(){
-//     validateConfirmPassword(this)
-//   });
-
-//   $('.forvalJs-confirmPassword').keyup(function(){
-//     if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-//       validateConfirmPassword (this);
-//     }
-//   });
-
-// });
-
-// function validateNotEmpty (elem) {
-//   var tempDataVal = +$(elem).attr('data-forvalJs-notEmpty') || 0;
-//   var tempVal = $(elem).val();
-
-//   if (tempDataVal == 0 && tempVal == '' ) {
-//     if ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-//       $($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]).text('this field can not be empty');
-//       return
-//     }
-//     drawPromptingElem(elem, 'this field can not be empty');
-//     return
-//   }
-//   if (tempDataVal != 0 && $(elem).val().length < tempDataVal) {
-//     if ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-//       $($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]).text('The length of the field is at least ' + tempDataVal + ' symbols');
-//       return
-//     }
-//     drawPromptingElem(elem, 'The length of the field is at least ' + tempDataVal + ' symbols');
-//     return
-//   }
-//   removePromptingElem($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]);
-// }
-
-
-
-// //   /* ↓↓↓ form validation ↓↓↓ */
-// //   $('button[type="submit"]').click(function(e){
-
-// //     var temp = $('#input-email').val();
-// //     if (temp.indexOf('@') <= 0 || temp.indexOf('@') > temp.lastIndexOf('.')) {
-// //       e.preventDefault();
-// //       $('#input-email-info').css({'transition':'height .5s','height':'30px'});
-// //     }
-// //   });
+    // if ( tempTypeAttr == 'price' ) {
+    //   if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
+    //     validatePrice(this, tempValue);
+    //   }
+    // }
