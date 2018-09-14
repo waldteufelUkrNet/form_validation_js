@@ -19,8 +19,16 @@
       <!-- ↓↓↓ WORK AREA (start) ↓↓↓-->
       <div class="work-area">
         <form class="forvalJs">
+          <label for="form-empty">Not empty:</label>
+          <input class="forvalJs" type="text" placeholder="not empty" id="form-empty" data-forvalJs-minLength="6">
           <label for="form-email2">E-mail:</label>
-          <input class="forvalJs" type="email" placeholder="enter your email" id="form-email2" data-forvalJs-minLength="6">
+          <input class="forvalJs" type="email" data-forvalJs-type="email" placeholder="enter your email" id="form-email2" data-forvalJs-minLength="6">
+          <label for="form-number">Price:</label>
+          <input class="forvalJs" type="text" placeholder="enter your price" id="form-number" data-forvalJs-type="price" data-forvalJs-minLength="10">
+          <label for="form-password2">Password:</label>
+          <input class="forvalJs" type="password" placeholder="enter your password" id="form-password2" data-forvalJs-type="password" data-forvalJs-minLength="6">
+          <label for="form-password">Confirm password:</label>
+          <input class="forvalJs" type="password" placeholder="enter your password" id="form-password" data-forvalJs-type="confirmPassword">
         </form>
       </div>
       <!-- ↑↑↑ /WORK AREA (end) ↑↑↑-->

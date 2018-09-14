@@ -13,56 +13,67 @@
 
 $(document).ready(function(){
   /* ↓↓↓ GLOBAL VARIABLES ↓↓↓ */
-  var validateSimpleIndicator = true;
+  var minLengthController = true;
   /* ↑↑↑ /GLOBAL VARIABLES ↑↑↑ */
-
   // вимкнення стандартної валідації форм
   $('form.forvalJs').attr('novalidate','true');
 
 
-$("input.forvalJs").bind("blur keyup", function(event) {
-  var tempTypeAttr      = $(this).attr('data-forvalJs-type') || $(this).attr('type'),
-      tempMinLengthAttr = +$(this).attr('data-forvalJs-minLength'),
-      tempMaxLengthAttr = +$(this).attr('data-forvalJs-maxLength'),
-      tempValue         = $(this).val();
+  $("input.forvalJs").bind("blur keyup", function(event) {
+    var tempTypeAttr      = $(this).attr('data-forvalJs-type'),
+        tempMinLengthAttr = +$(this).attr('data-forvalJs-minLength'),
+        tempMaxLengthAttr = +$(this).attr('data-forvalJs-maxLength'),
+        tempValue         = $(this).val();
 
-  if (event.type == 'blur') {
-    validateController(this, tempMinLengthAttr, tempMaxLengthAttr, tempTypeAttr, tempValue);
-  } else if(event.type == 'keyup') {
-    if ($(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
+    if ( event.type == 'blur' ) {
       validateController(this, tempMinLengthAttr, tempMaxLengthAttr, tempTypeAttr, tempValue);
+    } else if ( event.type == 'keyup' ) {
+      if ( $(this).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] || ($(this).next().next().next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] && tempTypeAttr == 'password' ) ) {
+        validateController(this, tempMinLengthAttr, tempMaxLengthAttr, tempTypeAttr, tempValue);
+      }
     }
-  }
-});
+  });
 
   /* ↓↓↓ FUNCTION DECLARATIONS ↓↓↓ */
   function validateController (elem, tempMinLengthAttr, tempMaxLengthAttr, tempTypeAttr, tempValue) {
-    // if ( $(this).attr('data-forvalJs-minLength') ) {
-    //   // дії за наявності мінімальної довжини
-    //   validateSimple(this,tempMinLengthAttr,tempValue);
-    // }
 
-    // if ( isNumeric(tempMaxLengthAttr) ) {
-    //   // дії за наявності максимальної довжини
-    // }
+    if ( isNumeric(tempMinLengthAttr) ) {
+      // дії за наявності мінімальної довжини
+      validateSimple(elem,tempMinLengthAttr,tempValue, tempTypeAttr);
+      if ( minLengthController == false ) return
+    }
 
-    // if ( tempTypeAttr == 'email' ) {
-    //   validateEmail(this, tempValue);
-    // }
+    if ( isNumeric(tempMaxLengthAttr) ) {
+      // дії за наявності максимальної довжини
+    }
 
-    // if ( tempTypeAttr == 'price' ) {
-    //   validatePrice(this, tempValue);
-    // }
+    if ( tempTypeAttr == 'email' ) {
+      validateEmail(elem, tempValue);
+    }
+
+    if ( tempTypeAttr == 'price' ) {
+      validatePrice(elem, tempValue);
+    }
+
+    if ( tempTypeAttr == 'password' ) {
+      validatePassword(elem, tempValue);
+
+
+    }
+
+    if (tempTypeAttr == 'confirmPassword' ) {
+      validateConfirmPassword(elem, tempValue);
+    }
   }
 
-  function validateSimple(elem, tempMinLengthAttr, tempValue) {
+  function validateSimple(elem, tempMinLengthAttr, tempValue, tempTypeAttr) {
     if ( tempMinLengthAttr == 0 && tempValue == '' ) {
       if ( $(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] ) {
         $( $(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] )
                   .text('this field can not be empty');
         return
       }
-      validateSimpleIndicator = false;
+      minLengthController = false;
       drawPromptingElem(elem, 'this field can not be empty');
       return
     }
@@ -72,17 +83,21 @@ $("input.forvalJs").bind("blur keyup", function(event) {
                   .text('The length of the field is at least ' + tempMinLengthAttr + ' symbols');
         return
       }
-      validateSimpleIndicator = false;
+      minLengthController = false;
       drawPromptingElem(elem, 'The length of the field is at least ' + tempMinLengthAttr + ' symbols');
       return
     }
-    validateSimpleIndicator = true;
-    removePromptingElem($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]);
+    minLengthController = true;
+
+    if (tempTypeAttr != 'email'&&
+        tempTypeAttr != 'price' &&
+        tempTypeAttr != 'password' &&
+        tempTypeAttr != 'confirmPassword' ) {
+    removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    }
   }
 
   function validateEmail(elem, tempValue) {
-
-    if (!validateSimpleIndicator) return
     if (tempValue.length == 0) return
 
     var charAmount = calculateCharsInStr(tempValue, '@');
@@ -121,7 +136,12 @@ $("input.forvalJs").bind("blur keyup", function(event) {
       drawPromptingElem(elem, 'incorrect domain name');
       return
     }
-    removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+
+    if ( minLengthController == false ) {
+      return
+    } else {
+      removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    }
   }
 
   function validatePrice(elem, tempValue) {
@@ -178,14 +198,21 @@ $("input.forvalJs").bind("blur keyup", function(event) {
         return
       }
     }
-    removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    if ( minLengthController == false ) {
+      return
+    } else {
+      removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    }
   }
 
-  function validatePassword(elem) {
-    var tempVal   = $(elem).val();
-    var hasNumber = hasSymbol = false;
-    var tempArr   = tempVal.split('');
+  function validatePassword(elem, tempValue) {
+    console.log("validatePassword");
 
+    if (tempValue.length == 0) return
+
+    var hasNumber = hasSymbol = false;
+
+    var tempArr = tempValue.split('');
     for (var i = 0; i < tempArr.length; i++) {
       if (isNumeric(tempArr[i])) {
         hasNumber = true;
@@ -202,23 +229,48 @@ $("input.forvalJs").bind("blur keyup", function(event) {
       drawPromptingElem(elem, 'password must contain at least one digit and at least one character');
       return
     }
-    //removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+
+// console.log("start");
+    var tempSibling = $(elem).siblings('.forvalJs[data-forvalJs-type="confirmPassword"]')[0];
+    var tempSiblingValue = $(tempSibling).val();
+    if ( tempSiblingValue.length != 0 ) {
+      if (tempSiblingValue != tempValue) {
+// console.log("tempValue", tempValue);
+// console.log("tempSiblingValue", tempSiblingValue);
+        if ( $(tempSibling).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] ) {
+          $( $(tempSibling).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] ).text('passwords do not match');
+          return
+        }
+        drawPromptingElem(tempSibling, 'passwords do not match');
+        return
+      }
+// console.log("end");
+      removePromptingElem ($(tempSibling).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    }
+
+    if ( minLengthController == false ) {
+      return
+    } else {
+      removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    }
   }
 
-  function validateConfirmPassword(elem) {
-    var tempVal        = $(elem).val();
-    console.log("tempVal", tempVal);
-    var tempSiblingVal = $($(elem).siblings('.forvalJs-password')[0]).val();
-    console.log("tempSiblingVal", tempSiblingVal);
-    if (tempSiblingVal != tempVal) {
-      if ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]) {
-        $($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0]).text('passwords do not match');
+  function validateConfirmPassword(elem, tempValue) {
+    console.log("validateConfirmPassword");
+    var tempSiblingValue = $($(elem).siblings('.forvalJs[data-forvalJs-type="password"]')[0]).val();
+    if (tempSiblingValue != tempValue) {
+      if ( $(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] ) {
+        $( $(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] ).text('passwords do not match');
         return
       }
       drawPromptingElem(elem, 'passwords do not match');
       return
     }
-    removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    if ( minLengthController == false ) {
+      return
+    } else {
+      removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    }
   }
 
   function drawPromptingElem(elem, text) {

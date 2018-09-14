@@ -4,7 +4,9 @@ form.forvalJs {
 	grid-column-gap       : 15px;
 	width                 : 600px;
 	margin                : 50px auto;
-	& > label {}
+	& > label {
+		user-select         : none;
+	}
 	& > input {
 		margin-bottom       : 15px;
 		padding             : 0 6px;
