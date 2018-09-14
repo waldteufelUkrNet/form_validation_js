@@ -1,5 +1,4 @@
 // made by waldteufel@ukr.net
-//       e.preventDefault();
 
 // .forvalJs
 // data-forvalJs-minLength='number'
@@ -34,6 +33,10 @@ $(document).ready(function(){
     }
   });
 
+  $('button.forvalJs').click(function(){ alert(1);
+//       e.preventDefault();
+  });
+
   /* ↓↓↓ FUNCTION DECLARATIONS ↓↓↓ */
   function validateController (elem, tempMinLengthAttr, tempMaxLengthAttr, tempTypeAttr, tempValue) {
 
@@ -57,8 +60,6 @@ $(document).ready(function(){
 
     if ( tempTypeAttr == 'password' ) {
       validatePassword(elem, tempValue);
-
-
     }
 
     if (tempTypeAttr == 'confirmPassword' ) {
