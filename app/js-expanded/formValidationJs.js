@@ -576,6 +576,12 @@ $(document).ready(function(){
            .text(text);
     $(elem).css({'transition'    :'margin-bottom .5s',
                  'margin-bottom' : '2px'});
+    setTimeout(function(){
+      $(elem).next()
+           .next('.forvalJs[data-forvalJs-type="prompting"]')
+           .css({'min-height': tempElHeight,
+                 'height': 'auto'})
+    },500)
   }
 
   function removePromptingElem (elem) {
