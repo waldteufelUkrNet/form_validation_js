@@ -156,7 +156,7 @@ $(document).ready(function(){
       if ( tempMinLengthAttr != 0 && (tempValue.length < tempMinLengthAttr) ) {
         if ( $(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] ) {
           if ( lang == 'ua' ) {
-            tempText = 'довжина поля мінімум ' + tempMinLengthAttr + ' символів'
+            tempText = 'довжина поля мінімум ' + tempMinLengthAttr + ' символи (-ів)'
           } else if ( lang == 'ru' ) {
             tempText = 'длинна поля минимум ' + tempMinLengthAttr + ' символов'
           } else {
@@ -168,7 +168,7 @@ $(document).ready(function(){
         }
         minLengthController = false;
         if ( lang == 'ua' ) {
-          tempText = 'довжина поля мінімум ' + tempMinLengthAttr + ' символів'
+          tempText = 'довжина поля мінімум ' + tempMinLengthAttr + ' символи (-ів)'
         } else if ( lang == 'ru' ) {
           tempText = 'длинна поля минимум ' + tempMinLengthAttr + ' символов'
         } else {
@@ -184,7 +184,7 @@ $(document).ready(function(){
       if ( tempValue.length > tempMaxLengthAttr ) {
         if ( $(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0] ) {
           if ( lang == 'ua' ) {
-            tempText = 'довжина поля максимум ' + tempMaxLengthAttr + ' символів'
+            tempText = 'довжина поля максимум ' + tempMaxLengthAttr + ' символи (-ів)'
           } else if ( lang == 'ru' ) {
             tempText = 'длинна поля максимум ' + tempMaxLengthAttr + ' символов'
           } else {
@@ -196,7 +196,7 @@ $(document).ready(function(){
         }
         maxLengthController = false;
         if ( lang == 'ua' ) {
-          tempText = 'довжина поля максимум ' + tempMaxLengthAttr + ' символів'
+          tempText = 'довжина поля максимум ' + tempMaxLengthAttr + ' символи (-ів)'
         } else if ( lang == 'ru' ) {
           tempText = 'длинна поля максимум ' + tempMaxLengthAttr + ' символов'
         } else {
@@ -565,7 +565,13 @@ $(document).ready(function(){
   }
 
   function drawPromptingElem(elem, text) {
-    var tempElHeight = getCoords(elem).height;
+
+    $(elem).after('<span></span><div class="forvalJs" data-forvalJs-type="prompting"></div>');
+    var promptingElem = $(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0];
+    $(promptingElem).css({'height' : 'auto'}).text(text);
+    var tempElHeight = getCoords(promptingElem).height;
+    $(promptingElem).prev().remove();
+    $(promptingElem).remove();
 
     $(elem).after('<span></span><div class="forvalJs" data-forvalJs-type="prompting"></div>');
 
@@ -576,12 +582,6 @@ $(document).ready(function(){
            .text(text);
     $(elem).css({'transition'    :'margin-bottom .5s',
                  'margin-bottom' : '2px'});
-    setTimeout(function(){
-      $(elem).next()
-           .next('.forvalJs[data-forvalJs-type="prompting"]')
-           .css({'min-height': tempElHeight,
-                 'height': 'auto'})
-    },500)
   }
 
   function removePromptingElem (elem) {
