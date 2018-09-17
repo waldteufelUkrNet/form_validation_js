@@ -1,4 +1,4 @@
-//  form validation js v 20180917
+//  form validation js v 20180917-1
 // made by waldteufel@ukr.net
 
 // CLASS NAME:
@@ -9,7 +9,6 @@
 
 // INPUT DATA-ATTRIBUTES:
 // data-forvalJs-minLength='number'     : min length
-// data-forvalJs-maxLength='number'     : max length - dont work
 // data-forvalJs-type='notEmpty'
 // data-forvalJs-type='email'           : x@x.x
 // data-forvalJs-type='price'           : number.number / number
@@ -641,3 +640,10 @@ $(document).ready(function(){
   }
   /* ↑↑↑ /FUNCTION DECLARATIONS ↑↑↑ */
 })
+
+// ПОКРАЩЕННЯ НА МАЙБУТНЄ
+
+// data-forvalJs-maxLength='number'     : max length - dont work
+// зробити більше фільтрів (напр. телефон , дата, ім'я, прізвище тощо')
+// зробити довільний фільтр по паттернах [AaЇї+8]
+// price + minLength - якщо є крапка неможливо вибрати розмірністьчисла
