@@ -1,3 +1,4 @@
+//  form validation js v 20180917
 // made by waldteufel@ukr.net
 
 // CLASS NAME:
@@ -8,7 +9,7 @@
 
 // INPUT DATA-ATTRIBUTES:
 // data-forvalJs-minLength='number'     : min length
-// data-forvalJs-maxLength='number'     : max length
+// data-forvalJs-maxLength='number'     : max length - dont work
 // data-forvalJs-type='notEmpty'
 // data-forvalJs-type='email'           : x@x.x
 // data-forvalJs-type='price'           : number.number / number
@@ -82,6 +83,16 @@ $(document).ready(function(){
       for (var i = 0; i < tempArr.length; i++) {
         if ( $(tempArr[i]).attr('data-forvalJs-minLength') && $(tempArr[i]).val().length == 0 ) {
           event.preventDefault();
+          if ( $(tempArr[i]).next().next('.forvalJs[data-forvalJs-type="prompting"]').length == 0 ) {
+            if ( lang == 'ua' ) {
+              tempText = 'це поле не може бути пустим';
+            } else if ( lang == 'ru' ) {
+              tempText = 'это поле не может быть пустым';
+            } else {
+              tempText = 'this field can not be empty';
+            }
+            drawPromptingElem(tempArr[i], tempText);
+          }
         }
       }
     }
@@ -219,11 +230,12 @@ $(document).ready(function(){
       }
     }
 
-    if (minLengthController == true &&
-        maxLengthController == true) {
-      removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
+    if (tempTypeAttr != 'email'&&
+        tempTypeAttr != 'price' &&
+        tempTypeAttr != 'password' &&
+        tempTypeAttr != 'confirmPassword' ) {
+    removePromptingElem ($(elem).next().next('.forvalJs[data-forvalJs-type="prompting"]')[0])
     }
-    return
   }
 
   function validateEmail(elem, tempValue) {
