@@ -92,7 +92,7 @@ gulp.task('sass-bem', function() {
 //мініфікація js - style.js
 gulp.task('js', function() {
   return gulp.src(['app/js-expanded/*.js'])
-    //.pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('app/js'))
     .pipe(browserSync.reload({stream:true}));
 });

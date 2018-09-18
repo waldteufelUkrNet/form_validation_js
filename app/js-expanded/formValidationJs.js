@@ -1,4 +1,4 @@
-//  form validation js v 20180917-1
+// form validation js v 20180918-1
 // made by waldteufel@ukr.net
 
 // CLASS NAME:
@@ -9,7 +9,7 @@
 
 // INPUT DATA-ATTRIBUTES:
 // data-forvalJs-minLength='number'     : min length
-// data-forvalJs-type='notEmpty'
+// data-forvalJs-type='notEmpty'        : for "not empty"-prompting use data-forvalJs-minLength attribute
 // data-forvalJs-type='email'           : x@x.x
 // data-forvalJs-type='price'           : number.number / number
 // data-forvalJs-type='password'        : number + symbol (length)
